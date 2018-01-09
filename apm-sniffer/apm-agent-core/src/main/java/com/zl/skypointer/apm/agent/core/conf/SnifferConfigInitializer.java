@@ -31,7 +31,7 @@ public class SnifferConfigInitializer {
      * Try to locate `agent.config`, which should be in the /config dictionary of agent package.
      * <p>
      * Also try to override the config by system.env and system.properties. All the keys in these two places should
-     * start with {@link #ENV_KEY_PREFIX}. e.g. in env `skywalking.agent.application_code=yourAppName` to override
+     * start with {@link #ENV_KEY_PREFIX}. e.g. in env `skypointer.agent.application_code=yourAppName` to override
      * `agent.application_code` in config file.
      * <p>
      * At the end, `agent.application_code` and `collector.servers` must be not blank.
@@ -45,7 +45,7 @@ public class SnifferConfigInitializer {
             properties.load(configFileStream);
             ConfigInitializer.initialize(properties, Config.class);
         } catch (Exception e) {
-            logger.error(e, "Failed to read the config file, skywalking is going to run in default config.");
+            logger.error(e, "Failed to read the config file, skypointer is going to run in default config.");
         }
 
         try {
@@ -63,11 +63,11 @@ public class SnifferConfigInitializer {
     }
 
     /**
-     * Override the config by system env. The env key must start with `skywalking`, the reuslt should be as same as in
+     * Override the config by system env. The env key must start with `skypointer`, the reuslt should be as same as in
      * `agent.config`
      * <p>
      * such as:
-     * Env key of `agent.application_code` shoule be `skywalking.agent.application_code`
+     * Env key of `agent.application_code` shoule be `skypointer.agent.application_code`
      *
      * @return the config file {@link InputStream}, or null if not needEnhance.
      */

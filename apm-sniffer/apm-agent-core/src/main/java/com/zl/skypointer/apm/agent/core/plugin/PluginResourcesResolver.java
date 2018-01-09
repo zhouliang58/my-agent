@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * Use the current classloader to read all plugin define file.
- * The file must be named 'skywalking-plugin.def'
+ * The file must be named 'skypointer-plugin.def'
  *
  * @author zhouliang
  * @version v1.0 2018/1/9 17:09
@@ -25,12 +25,12 @@ public class PluginResourcesResolver {
         List<URL> cfgUrlPaths = new ArrayList<URL>();
         Enumeration<URL> urls;
         try {
-            urls = AgentClassLoader.getDefault().getResources("skywalking-plugin.def");
+            urls = AgentClassLoader.getDefault().getResources("skypointer-plugin.def");
 
             while (urls.hasMoreElements()) {
                 URL pluginUrl = urls.nextElement();
                 cfgUrlPaths.add(pluginUrl);
-                logger.info("find skywalking plugin define in {}", pluginUrl);
+                logger.info("find skypointer plugin define in {}", pluginUrl);
             }
 
             return cfgUrlPaths;
