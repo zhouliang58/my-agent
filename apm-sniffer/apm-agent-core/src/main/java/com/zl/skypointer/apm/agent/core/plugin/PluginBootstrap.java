@@ -54,6 +54,11 @@ public class PluginBootstrap {
         for (PluginDefine pluginDefine : pluginClassList) {
             try {
                 logger.debug("loading plugin class {}.", pluginDefine.getDefineClass());
+                /**
+                 * Class.forName 实例化插件类
+                 * pluginDefine.getDefineClass() 指定类名  org.apache.skypointer.apm.plugin.httpClient.v4.define.HttpClientInstrumentation
+                 * AgentClassLoader.getDefault() 指定类加载器
+                 */
                 AbstractClassEnhancePluginDefine plugin =
                         (AbstractClassEnhancePluginDefine)Class.forName(pluginDefine.getDefineClass(),
                                 true,

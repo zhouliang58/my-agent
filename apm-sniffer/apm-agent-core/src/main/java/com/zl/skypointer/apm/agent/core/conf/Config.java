@@ -1,5 +1,6 @@
 package com.zl.skypointer.apm.agent.core.conf;
 
+import com.zl.skypointer.apm.agent.core.context.trace.TraceSegment;
 import com.zl.skypointer.apm.agent.core.logging.core.LogLevel;
 
 /**
@@ -87,5 +88,14 @@ public class Config {
          * The log level. Default is debug.
          */
         public static LogLevel LEVEL = LogLevel.DEBUG;
+    }
+
+    public static class Dictionary {
+        /**
+         * The buffer size of application codes and peer
+         */
+        public static int APPLICATION_CODE_BUFFER_SIZE = 10 * 10000;
+
+        public static int OPERATION_NAME_BUFFER_SIZE = 1000 * 10000;
     }
 }

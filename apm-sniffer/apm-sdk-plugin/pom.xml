@@ -14,7 +14,7 @@
 
 
     <modules>
-        <module>apm-httpClient-4.x-plugin</module>
+        <module>dubbo-plugin</module>
     </modules>
 
     <dependencies>

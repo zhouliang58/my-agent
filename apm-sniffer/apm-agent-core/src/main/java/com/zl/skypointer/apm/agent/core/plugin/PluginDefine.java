@@ -13,11 +13,13 @@ import com.zl.skypointr.apm.util.StringUtil;
 public class PluginDefine {
     /**
      * Plugin name.
+     * eg:  dubbo
      */
     private String name;
 
     /**
      * The class name of plugin defined.
+     * eg : org.apache.skywalking.apm.plugin.dubbo.DubboInstrumentation
      */
     private String defineClass;
 
