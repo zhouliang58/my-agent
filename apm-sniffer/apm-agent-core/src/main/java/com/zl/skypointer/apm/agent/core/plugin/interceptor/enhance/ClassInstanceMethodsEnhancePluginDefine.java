@@ -5,7 +5,9 @@ import com.zl.skypointer.apm.agent.core.plugin.interceptor.InstanceMethodsInterc
 import com.zl.skypointer.apm.agent.core.plugin.interceptor.StaticMethodsInterceptPoint;
 
 /**
- * 控制增强操作
+ * 类增强构造方法和实例方法的插件定义抽象类
+ * 实现 #getStaticMethodsInterceptPoints() 抽象方法，返回空，表示不增强静态方法。即只增强构造方法和实例方法。
+ *
  * This class controls all enhance operations, including enhance constructors, instance methods and static methods. All
  * the enhances base on three types interceptor point: {@link ConstructorInterceptPoint}, {@link
  * InstanceMethodsInterceptPoint} and {@link StaticMethodsInterceptPoint} If plugin is going to enhance constructors,

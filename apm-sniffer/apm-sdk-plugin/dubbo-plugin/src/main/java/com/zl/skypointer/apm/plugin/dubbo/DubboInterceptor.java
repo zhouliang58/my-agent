@@ -46,15 +46,26 @@ public class DubboInterceptor implements InstanceMethodsAroundInterceptor {
         final int port = requestURL.getPort();
         if (isConsumer) {
             final ContextCarrier contextCarrier = new ContextCarrier();
+            /**
+             * 创建 ExitSpan 对象，并将链路追踪上下文注入到 ContextCarrier 对象，用于跨进程的链路追踪。
+             * 其中，调用 #generateOperationName(URL, Invocation) 方法，生成操作名，
+             * 例如："org.skywalking.apm.plugin.test.Test.test(String)" 。
+             */
             span = ContextManager.createExitSpan(generateOperationName(requestURL, invocation), contextCarrier, host + ":" + port);
             //invocation.getAttachments().put("contextData", contextDataStr);
             //@see https://github.com/alibaba/dubbo/blob/dubbo-2.5.3/dubbo-rpc/dubbo-rpc-api/src/main/java/com/alibaba/dubbo/rpc/RpcInvocation.java#L154-L161
             CarrierItem next = contextCarrier.items();
             while (next.hasNext()) {
                 next = next.next();
+                /**
+                 * 设置 ContextCarrier 对象到 RPCContext ，从而将 ContextCarrier 对象隐式传参
+                 */
                 rpcContext.getAttachments().put(next.getHeadKey(), next.getHeadValue());
             }
         } else {
+            /**
+             * 解析 ContextCarrier 对象，用于跨进程的链路追踪。
+             */
             ContextCarrier contextCarrier = new ContextCarrier();
             CarrierItem next = contextCarrier.items();
             while (next.hasNext()) {
@@ -62,22 +73,41 @@ public class DubboInterceptor implements InstanceMethodsAroundInterceptor {
                 next.setHeadValue(rpcContext.getAttachment(next.getHeadKey()));
             }
 
+            /**
+             * 创建 EntrySpan 对象。
+             */
             span = ContextManager.createEntrySpan(generateOperationName(requestURL, invocation), contextCarrier);
         }
-
+        /**
+         * 设置 EntrySpan 对象的 url 标签键值对。
+         * 其中，调用 #generateRequestURL(URL, Invocation) 方法，生成链接。
+         * 例如，"dubbo://127.0.0.1:20880/org.skywalking.apm.plugin.test.Test.test(String)"。
+         */
         Tags.URL.set(span, generateRequestURL(requestURL, invocation));
+        /**
+         * 设置 EntrySpan 对象的组件类型。
+         */
         span.setComponent(ComponentsDefine.DUBBO);
+        /**
+         * 设置 EntrySpan 对象的分层。
+         */
         SpanLayer.asRPCFramework(span);
     }
 
     @Override
     public Object afterMethod(EnhancedInstance objInst, Method method, Object[] allArguments,
                               Class<?>[] argumentsTypes, Object ret) throws Throwable {
+        /**
+         * 当返回结果包含异常时，调用 #dealException(Throwable) 方法，处理异常。
+         */
         Result result = (Result)ret;
         if (result != null && result.getException() != null) {
             dealException(result.getException());
         }
 
+        /**
+         * 完成 EntrySpan 对象
+         */
         ContextManager.stopSpan();
         return ret;
     }

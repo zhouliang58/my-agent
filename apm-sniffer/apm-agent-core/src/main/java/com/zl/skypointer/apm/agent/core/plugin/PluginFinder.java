@@ -68,6 +68,10 @@ public class PluginFinder {
         return matchedPlugins;
     }
 
+    /**
+     * 自己的 org.skywalking.apm.agent.core.plugin.match 模块 , 仅定位于类级别的匹配，更常用而又精简的 API 。
+     * @return
+     */
     public ElementMatcher<? super TypeDescription> buildMatch() {
         ElementMatcher.Junction judge = new AbstractJunction<NamedElement>() {
             @Override

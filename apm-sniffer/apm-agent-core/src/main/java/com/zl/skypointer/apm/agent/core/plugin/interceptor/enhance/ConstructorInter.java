@@ -9,7 +9,12 @@ import net.bytebuddy.implementation.bind.annotation.RuntimeType;
 import net.bytebuddy.implementation.bind.annotation.This;
 
 /**
- * //TODO
+ * ConstructorInter 构造方法，调用 InterceptorInstanceLoader#load(String, classLoader) 方法，加载构造方法拦截器。
+
+ #intercept(Object) 方法，在构造方法执行完成后进行拦截，调用 InstanceConstructorInterceptor#onConstruct(...) 方法。
+
+ 为什么没有 ConstructorInterWithOverrideArgs？InstanceConstructorInterceptor#onConstruct(...) 方法，是在构造方法执行完成后进行调用拦截，
+ OverrideArgs 用于在调用方法之前，改变传入方法的参数。所以，在此处暂时没这块需要，因而没有 ConstructorInterWithOverrideArgs 。
  *
  * @author zhouliang
  * @version v1.0 2018/1/11 23:59

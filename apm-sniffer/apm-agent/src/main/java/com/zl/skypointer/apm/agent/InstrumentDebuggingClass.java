@@ -12,7 +12,8 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * //TODO
+ *Instrument 调试类，用于将被 JavaAgent 修改的所有类存储到 ${JAVA_AGENT_PACKAGE}/debugger 目录下。
+ * 需要配置 agent.is_open_debugging_class = true
  *
  * @author zhouliang
  * @version v1.0 2018/1/9 23:47

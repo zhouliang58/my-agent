@@ -21,7 +21,7 @@ import static net.bytebuddy.matcher.ElementMatchers.isStatic;
 import static net.bytebuddy.matcher.ElementMatchers.not;
 
 /**
- * //TODO
+ * SkyWalking 类增强插件定义抽象类。它注重在增强( Enhance )的抽象与实现。
  *
  * @author zhouliang
  * @version v1.0 2018/1/10 23:43
@@ -47,8 +47,14 @@ public abstract class ClassEnhancePluginDefine extends AbstractClassEnhancePlugi
     protected DynamicType.Builder<?> enhance(String enhanceOriginClassName,
                                              DynamicType.Builder<?> newClassBuilder, ClassLoader classLoader,
                                              EnhanceContext context) throws PluginException {
+        /**
+         * 增强静态方法
+         */
         newClassBuilder = this.enhanceClass(enhanceOriginClassName, newClassBuilder, classLoader);
 
+        /**
+         * 增强构造方法和实例方法
+         */
         newClassBuilder = this.enhanceInstance(enhanceOriginClassName, newClassBuilder, classLoader, context);
 
         return newClassBuilder;
@@ -64,6 +70,10 @@ public abstract class ClassEnhancePluginDefine extends AbstractClassEnhancePlugi
     private DynamicType.Builder<?> enhanceInstance(String enhanceOriginClassName,
                                                    DynamicType.Builder<?> newClassBuilder, ClassLoader classLoader,
                                                    EnhanceContext context) throws PluginException {
+        /**
+         * 调用 #getConstructorsInterceptPoints() / #getInstanceMethodsInterceptPoints() 方法，
+         * 获得 ConstructorInterceptPoint / InstanceMethodsInterceptPoint 数组。若都为空，不进行增强。
+         */
         ConstructorInterceptPoint[] constructorInterceptPoints = getConstructorsInterceptPoints();
         InstanceMethodsInterceptPoint[] instanceMethodsInterceptPoints = getInstanceMethodsInterceptPoints();
 
@@ -92,6 +102,8 @@ public abstract class ClassEnhancePluginDefine extends AbstractClassEnhancePlugi
          *
          * And make sure the source codes manipulation only occurs once.
          *
+         * 为目标 Java 类“自动”实现 org.skywalking.apm.agent.core.plugin.interceptor.enhance.EnhancedInstance 接口。
+         * 这样，目标 Java 类就有一个私有变量，拦截器在执行过程中，可以存储状态到该私有变量。
          */
         if (!context.isObjectExtended()) {
             newClassBuilder = newClassBuilder.defineField(CONTEXT_ATTR_NAME, Object.class, ACC_PRIVATE)
@@ -102,6 +114,7 @@ public abstract class ClassEnhancePluginDefine extends AbstractClassEnhancePlugi
 
         /**
          * 2. enhance constructors
+         * 遍历 ConstructorInterceptPoint 数组，逐个增强 ConstructorInterceptPoint 对应的构造方法。使用 ConstructorInter 处理拦截逻辑
          */
         if (existedConstructorInterceptPoint) {
             for (ConstructorInterceptPoint constructorInterceptPoint : constructorInterceptPoints) {
@@ -115,14 +128,21 @@ public abstract class ClassEnhancePluginDefine extends AbstractClassEnhancePlugi
 
         /**
          * 3. enhance instance methods
+         * 遍历 InstanceMethodsInterceptPoint 数组，逐个增强 InstanceMethodsInterceptPoint 对应的实例方法。
          */
         if (existedMethodsInterceptPoints) {
             for (InstanceMethodsInterceptPoint instanceMethodsInterceptPoint : instanceMethodsInterceptPoints) {
+                /**
+                 * 获得拦截器的类名。拦截器的实例，在 Inter 类里获取。
+                 */
                 String interceptor = instanceMethodsInterceptPoint.getMethodsInterceptor();
                 if (StringUtil.isEmpty(interceptor)) {
                     throw new EnhanceException("no InstanceMethodsAroundInterceptor define to enhance class " + enhanceOriginClassName);
                 }
 
+                /**
+                 * 当 InstanceMethodsInterceptPoint#isOverrideArgs() 方法返回 true 时，使用 InstMethodsInterWithOverrideArgs 处理拦截逻辑。
+                 */
                 if (instanceMethodsInterceptPoint.isOverrideArgs()) {
                     newClassBuilder =
                             newClassBuilder.method(not(isStatic()).and(instanceMethodsInterceptPoint.getMethodsMatcher()))
@@ -133,7 +153,11 @@ public abstract class ClassEnhancePluginDefine extends AbstractClassEnhancePlugi
                                                     )
                                                     .to(new InstMethodsInterWithOverrideArgs(interceptor, classLoader))
                                     );
-                } else {
+                }
+                /**
+                 * 当 InstanceMethodsInterceptPoint#isOverrideArgs() 方法返回 false 时，使用 InstMethodsInter 处理拦截逻辑
+                 */
+                else {
                     newClassBuilder =
                             newClassBuilder.method(not(isStatic()).and(instanceMethodsInterceptPoint.getMethodsMatcher()))
                                     .intercept(
@@ -170,18 +194,30 @@ public abstract class ClassEnhancePluginDefine extends AbstractClassEnhancePlugi
      */
     private DynamicType.Builder<?> enhanceClass(String enhanceOriginClassName,
                                                 DynamicType.Builder<?> newClassBuilder, ClassLoader classLoader) throws PluginException {
+        /**
+         * 获得 StaticMethodsInterceptPoint 数组。若为空，不进行增强。
+         */
         StaticMethodsInterceptPoint[] staticMethodsInterceptPoints = getStaticMethodsInterceptPoints();
 
         if (staticMethodsInterceptPoints == null || staticMethodsInterceptPoints.length == 0) {
             return newClassBuilder;
         }
 
+        /**
+         * 遍历 StaticMethodsInterceptPoint 数组，逐个增强StaticMethodsInterceptPoint 对应的静态方法。
+         */
         for (StaticMethodsInterceptPoint staticMethodsInterceptPoint : staticMethodsInterceptPoints) {
+            /**
+             * 获得拦截器的类名。拦截器的实例，在 Inter 类里获取。
+             */
             String interceptor = staticMethodsInterceptPoint.getMethodsInterceptor();
             if (StringUtil.isEmpty(interceptor)) {
                 throw new EnhanceException("no StaticMethodsAroundInterceptor define to enhance class " + enhanceOriginClassName);
             }
 
+            /**
+             * 当 StaticMethodsInterceptPoint#isOverrideArgs() 方法返回 true 时，使用 StaticMethodsInterWithOverrideArgs 处理拦截逻辑。
+             */
             if (staticMethodsInterceptPoint.isOverrideArgs()) {
                 newClassBuilder = newClassBuilder.method(isStatic().and(staticMethodsInterceptPoint.getMethodsMatcher()))
                         .intercept(
@@ -191,7 +227,11 @@ public abstract class ClassEnhancePluginDefine extends AbstractClassEnhancePlugi
                                         )
                                         .to(new StaticMethodsInterWithOverrideArgs(interceptor))
                         );
-            } else {
+            }
+            /**
+             * 当 StaticMethodsInterceptPoint#isOverrideArgs() 方法返回 false 时，使用 StaticMethodsInter 处理拦截逻辑
+             */
+            else {
                 newClassBuilder = newClassBuilder.method(isStatic().and(staticMethodsInterceptPoint.getMethodsMatcher()))
                         .intercept(
                                 MethodDelegation.withDefaultConfiguration()

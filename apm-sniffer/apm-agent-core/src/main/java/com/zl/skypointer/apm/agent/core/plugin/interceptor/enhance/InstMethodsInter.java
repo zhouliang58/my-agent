@@ -42,7 +42,16 @@ public class InstMethodsInter {
     }
 
     /**
+     * 此处会调用拦截器beforeMethod、afterMethod、handleMethodException方法，也会执行目标方法
+     *
      * Intercept the target instance method.
+     * 1、调用 InstanceMethodsAroundInterceptor#beforeMethod(...) 方法，执行在实例方法之前的逻辑。
+     *      org.skywalking.apm.agent.core.plugin.interceptor.enhance.MethodInterceptResult ，方法拦截器执行结果。
+     *      当调用 MethodInterceptResult#defineReturnValue(Object) 方法，设置执行结果，并标记不再继续执行。
+     * 2、当 MethodInterceptResult 已经有执行结果，不再执行原有方法，直接返回结果。
+     * 3、调用 Callable#call() 方法，执行原有实例方法。
+     * 4、调用 InstanceMethodsAroundInterceptor#handleMethodException(...) 方法，处理异常。
+     * 5、调用 InstanceMethodsAroundInterceptor#afterMethod(...) 方法，执行后置逻辑。
      *
      * @param obj target class instance.
      * @param allArguments all method arguments

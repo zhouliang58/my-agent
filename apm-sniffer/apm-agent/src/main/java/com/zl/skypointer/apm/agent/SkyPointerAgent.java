@@ -46,14 +46,35 @@ public class SkyPointerAgent {
             }
         }, "skywalking service shutdown thread"));
 
+        /**
+         * AgentBuilder#type(ElementMatcher) 方法，实现 net.bytebuddy.matcher.ElementMatcher 接口，设置需要拦截的类
+         *
+         * 调用 AgentBuilder#transform(Transformer) 方法，设置 Java 类的修改逻辑。
+         */
         new AgentBuilder.Default().type(pluginFinder.buildMatch()).transform(new AgentBuilder.Transformer() {
+
+            /**
+             * 例如
+             * typeDescription ——class org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor
+             */
             @Override
-            public DynamicType.Builder<?> transform(DynamicType.Builder<?> builder, TypeDescription typeDescription, ClassLoader classLoader, JavaModule module) {
+            public DynamicType.Builder<?> transform(DynamicType.Builder<?> builder, TypeDescription typeDescription,
+                                                    ClassLoader classLoader, JavaModule module) {
+
+                /**
+                 * PluginFinder#find(TypeDescription, ClassLoader) 方法，获得匹配的 AbstractClassEnhancePluginDefine 数组。
+                 */
                 List<AbstractClassEnhancePluginDefine> pluginDefines = pluginFinder.find(typeDescription, classLoader);
                 if (pluginDefines.size() > 0) {
                     DynamicType.Builder<?> newBuilder = builder;
                     EnhanceContext context = new EnhanceContext();
                     for (AbstractClassEnhancePluginDefine define : pluginDefines) {
+                        /**
+                         * 调用 AbstractClassEnhancePluginDefine#define(...) 方法，设置 net.bytebuddy.dynamic.DynamicType.Builder 对象。
+                         * 通过该对象，定义如何拦截需要修改的 Java 类。
+                         * 在 AbstractClassEnhancePluginDefine#define(...) 方法的内部，
+                         * 会调用 net.bytebuddy.dynamic.DynamicType.ImplementationDefinition#intercept(Implementation)
+                         */
                         DynamicType.Builder<?> possibleNewBuilder = define.define(typeDescription.getTypeName(), newBuilder, classLoader, context);
                         if (possibleNewBuilder != null) {
                             newBuilder = possibleNewBuilder;
@@ -75,6 +96,10 @@ public class SkyPointerAgent {
 
             }
 
+            /**
+             * 当 Java 类的修改成功，进行调用。
+             *
+             */
             @Override
             public void onTransformation(TypeDescription typeDescription, ClassLoader classLoader, JavaModule module,
                                          boolean loaded, DynamicType dynamicType) {
@@ -91,6 +116,9 @@ public class SkyPointerAgent {
 
             }
 
+            /**
+             * 当 Java 类的修改失败，进行调用。
+             */
             @Override public void onError(String typeName, ClassLoader classLoader, JavaModule module, boolean loaded,
                                           Throwable throwable) {
                 logger.error("Enhance class " + typeName + " error.", throwable);

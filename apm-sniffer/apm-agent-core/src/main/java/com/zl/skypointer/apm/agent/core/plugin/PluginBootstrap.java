@@ -38,7 +38,9 @@ public class PluginBootstrap {
             return new ArrayList<AbstractClassEnhancePluginDefine>();
         }
 
-        // 初始化插件
+        /**
+         * 将插件中的skywalking-plugin.def实例化成PluginDefine对象
+         */
         for (URL pluginUrl : resources) {
             try {
                 PluginCfg.INSTANCE.load(pluginUrl.openStream());
@@ -55,7 +57,7 @@ public class PluginBootstrap {
             try {
                 logger.debug("loading plugin class {}.", pluginDefine.getDefineClass());
                 /**
-                 * Class.forName 实例化插件类
+                 * Class.forName 实例化插件增强类
                  * pluginDefine.getDefineClass() 指定类名  org.apache.skypointer.apm.plugin.httpClient.v4.define.HttpClientInstrumentation
                  * AgentClassLoader.getDefault() 指定类加载器
                  */
