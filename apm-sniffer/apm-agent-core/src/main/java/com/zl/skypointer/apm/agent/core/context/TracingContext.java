@@ -379,7 +379,7 @@ public class TracingContext implements AbstractTracerContext {
 
     /**
      * Stop the given span, if and only if this one is the top element of {@link #activeSpanStack}. Because the tracing
-     * core must make sure the span must match in a stack module, like any program did.
+     * core must make sure the span must match in a stack com.zl.skypointer.apm.collector.core, like any program did.
      *
      * @param span to finish
      */

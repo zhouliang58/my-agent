@@ -36,7 +36,7 @@ public class TraceSegment {
 
     /**
      * The spans belong to this trace segment. They all have finished. All active spans are hold and controlled by
-     * "skywalking-api" module.
+     * "skywalking-api" com.zl.skypointer.apm.collector.core.
      */
     private List<AbstractTracingSpan> spans;
 
@@ -86,7 +86,7 @@ public class TraceSegment {
     }
 
     /**
-     * After {@link AbstractSpan} is finished, as be controller by "skywalking-api" module, notify the {@link
+     * After {@link AbstractSpan} is finished, as be controller by "skywalking-api" com.zl.skypointer.apm.collector.core, notify the {@link
      * TraceSegment} to archive it.
      *
      * @param finishedSpan
