@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
+ * 执行 ModuleProvider 准备阶段的逻辑。在改方法内部，会创建 ModuleProvider 对应的 Service
  * Created by zhouliang
  * 2018-02-07 10:10
  */
@@ -29,16 +30,20 @@ public abstract class ModuleProvider {
     }
 
     /**
+     * 获得组件服务提供者名。
+     * eg：redis、jetty等
      * @return the name of this provider.
      */
     public abstract String name();
 
     /**
+     * 获得 ModuleProvider 对应的 Module 类。注意，ModuleProvider 的名字可以重复
      * @return the module name
      */
     public abstract Class<? extends Module> module();
 
     /**
+     * 执行 ModuleProvider 准备阶段的逻辑：Service 的创建，私有变量的创建等等
      * In prepare stage, the module should initialize things which are irrelative other modules.
      *
      * @param config from `application.yml`
@@ -46,6 +51,7 @@ public abstract class ModuleProvider {
     public abstract void prepare(Properties config) throws ServiceNotProvidedException;
 
     /**
+     * 执行 ModuleProvider 启动阶段的逻辑：私有变量的初始化等等。
      * In start stage, the module has been ready for interop.
      *
      * @param config from `application.yml`
@@ -53,6 +59,7 @@ public abstract class ModuleProvider {
     public abstract void start(Properties config) throws ServiceNotProvidedException;
 
     /**
+     * 执行 ModuleProvider 启动完成阶段的逻辑：私有变量的初始化等等。
      * This callback executes after all modules start up successfully.
      *
      * @throws ServiceNotProvidedException
@@ -60,11 +67,13 @@ public abstract class ModuleProvider {
     public abstract void notifyAfterCompleted() throws ServiceNotProvidedException;
 
     /**
+     * 获得 ModuleProvider 依赖的 Module 名字数组
      * @return module names which does this module require?
      */
     public abstract String[] requiredModules();
 
     /**
+     * 注册 Service 对象。一个 ModuleProvider 可以有 0 到 N 个 Service 对象。
      * Register a implementation for the service of this module provider.
      *
      * @param serviceType
@@ -80,6 +89,7 @@ public abstract class ModuleProvider {
     }
 
     /**
+     * 校验 ModuleProvider 包含的 Service 们都创建成功
      * Make sure all required services have been implemented.
      *
      * @param requiredServices must be implemented by the module.
@@ -100,6 +110,9 @@ public abstract class ModuleProvider {
         }
     }
 
+    /**
+     * 获得 Service 对象
+     */
     <T extends Service> T getService(Class<T> serviceType) throws ServiceNotProvidedException {
         Service serviceImpl = services.get(serviceType);
         if (serviceImpl != null) {

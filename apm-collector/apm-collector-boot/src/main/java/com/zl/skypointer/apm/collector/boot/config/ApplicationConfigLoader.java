@@ -27,6 +27,11 @@ public class ApplicationConfigLoader implements ConfigLoader<ApplicationConfigur
         return configuration;
     }
 
+    /**
+     * 从 apm-collector-core 的 application.yml 加载自定义配置。
+     * @param configuration
+     * @throws ConfigFileNotFoundException
+     */
     private void loadConfig(ApplicationConfiguration configuration) throws ConfigFileNotFoundException {
         try {
             Reader applicationReader = ResourceUtils.read("application.yml");
@@ -55,6 +60,11 @@ public class ApplicationConfigLoader implements ConfigLoader<ApplicationConfigur
         }
     }
 
+    /**
+     * 从 apm-collector-core 的 application-default.yml 加载默认配置。
+     * @param configuration
+     * @throws ConfigFileNotFoundException
+     */
     private void loadDefaultConfig(ApplicationConfiguration configuration) throws ConfigFileNotFoundException {
         try {
             Reader applicationReader = ResourceUtils.read("application-default.yml");

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 组件启动流程
  * Created by zhouliang
  * 2018-02-07 10:18
  */
@@ -20,6 +21,9 @@ public class BootstrapFlow {
     private ApplicationConfiguration applicationConfiguration;
     private List<ModuleProvider> startupSequence;
 
+    /**
+     * 调用 #makeSequence() 方法，获得 ModuleProvider 启动顺序，这个是该类的重点。
+     */
     public BootstrapFlow(Map<String, Module> loadedModules,
                          ApplicationConfiguration applicationConfiguration) throws CycleDependencyException {
         this.loadedModules = loadedModules;
@@ -29,6 +33,11 @@ public class BootstrapFlow {
         makeSequence();
     }
 
+    /**
+     * 校验依赖 Module 已经都存在。
+     * 校验 ModuleProvider 包含的 Service 们都创建成功。
+     * 调用 ModuleProvider#start(...) 方法，执行 ModuleProvider 启动阶段逻辑。
+     */
     void start(ModuleManager moduleManager,
                ApplicationConfiguration configuration) throws ProviderNotFoundException, ModuleNotFoundException, ServiceNotProvidedException {
         for (ModuleProvider provider : startupSequence) {
@@ -48,6 +57,9 @@ public class BootstrapFlow {
         }
     }
 
+    /**
+     * 调用 ModuleProvider#notifyAfterCompleted() 方法，执行 ModuleProvider 启动完成阶段的逻辑。
+     */
     void notifyAfterCompleted() throws ProviderNotFoundException, ModuleNotFoundException, ServiceNotProvidedException {
         for (ModuleProvider provider : startupSequence) {
             provider.notifyAfterCompleted();
