@@ -9,6 +9,9 @@ import java.util.Properties;
  */
 public class ApplicationConfiguration {
 
+    /**
+     * 一个应用配置类包含多个组件配置类( ModuleConfiguration )。每个组件对应一个组件配置类。
+     */
     private HashMap<String, ModuleConfiguration> modules = new HashMap<>();
 
     public String[] moduleList() {
@@ -33,6 +36,10 @@ public class ApplicationConfiguration {
      * The configurations about a certain module.
      */
     public class ModuleConfiguration {
+        /**
+         * 一个组件配置类包含多个组件服务提供者配置( ProviderConfiguration )。每个组件服务提供者对应一个组件配置类。
+         * 注意：因为一个组件只允许同时使用一个组件服务提供者，所以一个组件配置类只设置一个组件服务提供者配置。
+         */
         private HashMap<String, ProviderConfiguration> providers = new HashMap<>();
 
         private ModuleConfiguration() {
