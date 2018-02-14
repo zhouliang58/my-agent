@@ -17,21 +17,26 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
+package com.zl.skypointer.apm.collector.remote.grpc;
 
 
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+import com.zl.skypointer.apm.collector.cluster.ModuleRegistration;
+import com.zl.skypointer.apm.collector.core.util.Const;
 
 /**
  * @author peng-yongsheng
  */
-public abstract class DefineException extends CollectorException {
+public class RemoteModuleGRPCRegistration extends ModuleRegistration {
 
-    public DefineException(String message) {
-        super(message);
+    private final String host;
+    private final int port;
+
+    public RemoteModuleGRPCRegistration(String host, int port) {
+        this.host = host;
+        this.port = port;
     }
 
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
+    @Override public Value buildValue() {
+        return new Value(host, port, Const.EMPTY_STRING);
     }
 }

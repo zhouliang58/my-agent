@@ -17,7 +17,7 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
+package com.zl.skypointer.apm.collector.remote;
 
 
 import com.zl.skypointer.apm.collector.core.module.CollectorException;
@@ -25,13 +25,13 @@ import com.zl.skypointer.apm.collector.core.module.CollectorException;
 /**
  * @author peng-yongsheng
  */
-public abstract class DefineException extends CollectorException {
+public abstract class RemoteException extends CollectorException {
 
-    public DefineException(String message) {
+    public RemoteException(String message) {
         super(message);
     }
 
-    public DefineException(String message, Throwable cause) {
+    public RemoteException(String message, Throwable cause) {
         super(message, cause);
     }
 }

@@ -17,21 +17,14 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
+package com.zl.skypointer.apm.collector.remote.service;
 
 
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+import com.zl.skypointer.apm.collector.core.module.Service;
 
 /**
  * @author peng-yongsheng
  */
-public abstract class DefineException extends CollectorException {
-
-    public DefineException(String message) {
-        super(message);
-    }
-
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
-    }
+public interface RemoteClientService extends Service {
+    RemoteClient create(String host, int port, int channelSize, int bufferSize);
 }

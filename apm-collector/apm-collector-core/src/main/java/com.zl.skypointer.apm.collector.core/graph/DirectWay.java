@@ -17,21 +17,17 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
-
-
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+package com.zl.skypointer.apm.collector.core.graph;
 
 /**
- * @author peng-yongsheng
+ * @author wusheng
  */
-public abstract class DefineException extends CollectorException {
-
-    public DefineException(String message) {
-        super(message);
+public class DirectWay<INPUT, OUTPUT> extends WayToNode<INPUT, OUTPUT> {
+    public DirectWay(NodeProcessor<INPUT, OUTPUT> destinationHandler) {
+        super(destinationHandler);
     }
 
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
+    @Override protected void in(INPUT o) {
+        out(o);
     }
 }

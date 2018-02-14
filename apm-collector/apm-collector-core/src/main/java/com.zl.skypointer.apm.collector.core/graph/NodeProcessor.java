@@ -17,21 +17,18 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
-
-
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+package com.zl.skypointer.apm.collector.core.graph;
 
 /**
- * @author peng-yongsheng
+ * @author peng-yongsheng, wu-sheng
  */
-public abstract class DefineException extends CollectorException {
+public interface NodeProcessor<input, output> {
+    /**
+     * The unique id in the certain graph.
+     *
+     * @return id
+     */
+    int id();
 
-    public DefineException(String message) {
-        super(message);
-    }
-
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    void process(input input, Next<output> next);
 }

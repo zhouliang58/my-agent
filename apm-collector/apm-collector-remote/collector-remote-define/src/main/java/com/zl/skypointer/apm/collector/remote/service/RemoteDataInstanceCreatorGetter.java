@@ -17,21 +17,12 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
-
-
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+package com.zl.skypointer.apm.collector.remote.service;
 
 /**
  * @author peng-yongsheng
  */
-public abstract class DefineException extends CollectorException {
-
-    public DefineException(String message) {
-        super(message);
-    }
-
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
-    }
+public interface RemoteDataInstanceCreatorGetter {
+    RemoteDataRegisterService.RemoteDataInstanceCreator getInstanceCreator(
+            Integer remoteDataId) throws RemoteDataInstanceCreatorNotFoundException;
 }

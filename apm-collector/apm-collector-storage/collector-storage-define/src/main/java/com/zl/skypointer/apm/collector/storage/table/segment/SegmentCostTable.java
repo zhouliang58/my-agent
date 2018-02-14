@@ -17,21 +17,20 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
+package com.zl.skypointer.apm.collector.storage.table.segment;
 
-
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+import org.apache.skywalking.apm.collector.core.data.CommonTable;
 
 /**
  * @author peng-yongsheng
  */
-public abstract class DefineException extends CollectorException {
-
-    public DefineException(String message) {
-        super(message);
-    }
-
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
-    }
+public class SegmentCostTable extends CommonTable {
+    public static final String TABLE = "segment_cost";
+    public static final String COLUMN_SEGMENT_ID = "segment_id";
+    public static final String COLUMN_APPLICATION_ID = "application_id";
+    public static final String COLUMN_START_TIME = "start_time";
+    public static final String COLUMN_END_TIME = "end_time";
+    public static final String COLUMN_SERVICE_NAME = "service_name";
+    public static final String COLUMN_COST = "cost";
+    public static final String COLUMN_IS_ERROR = "is_error";
 }

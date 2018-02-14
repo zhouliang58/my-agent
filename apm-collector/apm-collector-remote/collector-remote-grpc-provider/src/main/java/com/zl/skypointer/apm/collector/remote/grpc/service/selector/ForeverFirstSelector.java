@@ -17,21 +17,24 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
+package com.zl.skypointer.apm.collector.remote.grpc.service.selector;
 
+import com.zl.skypointer.apm.collector.core.data.Data;
+import com.zl.skypointer.apm.collector.remote.service.RemoteClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+import java.util.List;
 
 /**
  * @author peng-yongsheng
  */
-public abstract class DefineException extends CollectorException {
+public class ForeverFirstSelector implements RemoteClientSelector {
 
-    public DefineException(String message) {
-        super(message);
-    }
+    private final Logger logger = LoggerFactory.getLogger(ForeverFirstSelector.class);
 
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
+    @Override public RemoteClient select(List<RemoteClient> clients, Data message) {
+        logger.debug("clients size: {}", clients.size());
+        return clients.get(0);
     }
 }

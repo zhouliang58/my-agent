@@ -17,21 +17,16 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
+package com.zl.skypointer.apm.collector.storage.table.register;
 
-
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+import org.apache.skywalking.apm.collector.core.data.CommonTable;
 
 /**
  * @author peng-yongsheng
  */
-public abstract class DefineException extends CollectorException {
-
-    public DefineException(String message) {
-        super(message);
-    }
-
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
-    }
+public class ServiceNameTable extends CommonTable {
+    public static final String TABLE = "service_name";
+    public static final String COLUMN_SERVICE_NAME = "service_name";
+    public static final String COLUMN_APPLICATION_ID = "application_id";
+    public static final String COLUMN_SERVICE_ID = "service_id";
 }

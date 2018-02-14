@@ -17,21 +17,13 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
-
-
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+package com.zl.skypointer.apm.commons.datacarrier.buffer;
 
 /**
- * @author peng-yongsheng
+ * Created by wusheng on 2016/10/25.
  */
-public abstract class DefineException extends CollectorException {
-
-    public DefineException(String message) {
-        super(message);
-    }
-
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
-    }
+public enum BufferStrategy {
+    BLOCKING,
+    OVERRIDE,
+    IF_POSSIBLE
 }

@@ -17,21 +17,19 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
+package com.zl.skypointer.apm.commons.datacarrier.partition;
 
-
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
 
 /**
- * @author peng-yongsheng
+ * Created by wusheng on 2016/10/25.
  */
-public abstract class DefineException extends CollectorException {
+public interface IDataPartitioner<T> {
+    int partition(int total, T data);
 
-    public DefineException(String message) {
-        super(message);
-    }
-
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    /**
+     * @return an integer represents how many times should retry when {@link BufferStrategy#IF_POSSIBLE}.
+     *
+     * Less or equal 1, means not support retry.
+     */
+    int maxRetryCount();
 }

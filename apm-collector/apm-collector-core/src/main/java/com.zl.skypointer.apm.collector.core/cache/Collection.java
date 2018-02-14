@@ -17,21 +17,28 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
-
-
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+package com.zl.skypointer.apm.collector.core.cache;
 
 /**
  * @author peng-yongsheng
  */
-public abstract class DefineException extends CollectorException {
+public interface Collection<Data> {
 
-    public DefineException(String message) {
-        super(message);
-    }
+    void reading();
 
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    boolean isReading();
+
+    void writing();
+
+    boolean isWriting();
+
+    void clear();
+
+    int size();
+
+    void finishReading();
+
+    void finishWriting();
+
+    Data collection();
 }

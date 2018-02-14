@@ -17,21 +17,18 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
+package com.zl.skypointer.apm.collector.storage.dao;
 
-
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+import org.apache.skywalking.apm.collector.storage.base.dao.DAO;
+import org.apache.skywalking.apm.collector.storage.table.register.ServiceName;
 
 /**
  * @author peng-yongsheng
  */
-public abstract class DefineException extends CollectorException {
+public interface IServiceNameRegisterDAO extends DAO {
+    int getMaxServiceId();
 
-    public DefineException(String message) {
-        super(message);
-    }
+    int getMinServiceId();
 
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    void save(ServiceName serviceName);
 }

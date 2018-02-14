@@ -17,21 +17,20 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
+package com.zl.skypointer.apm.collector.storage.table.alerting;
 
-
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+import org.apache.skywalking.apm.collector.core.data.CommonTable;
 
 /**
  * @author peng-yongsheng
  */
-public abstract class DefineException extends CollectorException {
-
-    public DefineException(String message) {
-        super(message);
-    }
-
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
-    }
+public class AlertingListTable extends CommonTable {
+    public static final String TABLE = "alerting_list";
+    public static final String COLUMN_LAYER = "layer";
+    public static final String COLUMN_LAYER_ID = "layer_id";
+    public static final String COLUMN_FIRST_TIME_BUCKET = "first_time_bucket";
+    public static final String COLUMN_LAST_TIME_BUCKET = "last_time_bucket";
+    public static final String COLUMN_EXPECTED = "expected";
+    public static final String COLUMN_ACTUAL = "actual";
+    public static final String COLUMN_VALID = "valid";
 }

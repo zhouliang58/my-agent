@@ -17,21 +17,17 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
+package com.zl.skypointer.apm.collector.storage.dao;
 
+import org.apache.skywalking.apm.collector.storage.base.dao.DAO;
 
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+import java.util.List;
 
 /**
  * @author peng-yongsheng
  */
-public abstract class DefineException extends CollectorException {
+public interface IGlobalTraceUIDAO extends DAO {
+    List<String> getGlobalTraceId(String segmentId);
 
-    public DefineException(String message) {
-        super(message);
-    }
-
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    List<String> getSegmentIds(String globalTraceId);
 }

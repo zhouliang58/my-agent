@@ -17,21 +17,28 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
+package com.zl.skypointer.apm.collector.core.graph;
 
-
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @author peng-yongsheng
+ * @author wu-sheng
  */
-public abstract class DefineException extends CollectorException {
+public class GraphNodeFinder {
+    private Graph graph;
 
-    public DefineException(String message) {
-        super(message);
+    GraphNodeFinder(Graph graph) {
+        this.graph = graph;
     }
 
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
+    public Next findNext(int handlerId) {
+        ConcurrentHashMap<Integer, Node> graphNodeIndex = graph.getNodeIndex();
+        Node node = graphNodeIndex.get(handlerId);
+        if (node == null) {
+            throw new NodeNotFoundException("Can't find node with handlerId="
+                + handlerId
+                + " in graph[" + graph.getId() + "]");
+        }
+        return node.getNext();
     }
 }

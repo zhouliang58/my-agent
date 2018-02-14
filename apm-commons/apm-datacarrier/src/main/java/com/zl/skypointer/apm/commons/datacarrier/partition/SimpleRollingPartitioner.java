@@ -17,21 +17,24 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
-
-
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+package com.zl.skypointer.apm.commons.datacarrier.partition;
 
 /**
- * @author peng-yongsheng
+ * use normal int to rolling.
+ *
+ *
+ * Created by wusheng on 2016/10/25.
  */
-public abstract class DefineException extends CollectorException {
+public class SimpleRollingPartitioner<T> implements IDataPartitioner<T> {
+    private volatile int i = 0;
 
-    public DefineException(String message) {
-        super(message);
+    @Override
+    public int partition(int total, T data) {
+        return Math.abs(i++ % total);
     }
 
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
+    @Override
+    public int maxRetryCount() {
+        return 3;
     }
 }

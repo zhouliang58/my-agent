@@ -17,21 +17,13 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
-
-
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+package com.zl.skypointer.apm.collector.core.graph;
 
 /**
- * @author peng-yongsheng
+ * @author wusheng
  */
-public abstract class DefineException extends CollectorException {
-
-    public DefineException(String message) {
+public class NodeNotFoundException extends RuntimeException {
+    public NodeNotFoundException(String message) {
         super(message);
-    }
-
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
     }
 }

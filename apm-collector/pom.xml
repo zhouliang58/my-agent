@@ -20,6 +20,8 @@
         <module>apm-collector-grpc-manager</module>
         <module>apm-collector-naming</module>
         <module>apm-collector-queue</module>
+        <module>apm-collector-storage</module>
+        <module>apm-collector-remote</module>
     </modules>
 
     <dependencies>

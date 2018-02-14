@@ -19,9 +19,9 @@
 
 package com.zl.skypointer.apm.collector.core.data;
 
-import org.apache.skywalking.apm.collector.core.define.DefineException;
-import org.apache.skywalking.apm.collector.core.define.DefinitionLoader;
-import org.apache.skywalking.apm.collector.core.define.Loader;
+import com.zl.skypointer.apm.collector.core.define.DefineException;
+import com.zl.skypointer.apm.collector.core.define.DefinitionLoader;
+import com.zl.skypointer.apm.collector.core.define.Loader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

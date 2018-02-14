@@ -17,21 +17,22 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
+package com.zl.skypointer.apm.collector.remote.grpc.service.selector;
 
 
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+import com.zl.skypointer.apm.collector.core.data.Data;
+import com.zl.skypointer.apm.collector.remote.service.RemoteClient;
+
+import java.util.List;
 
 /**
  * @author peng-yongsheng
  */
-public abstract class DefineException extends CollectorException {
+public class HashCodeSelector implements RemoteClientSelector {
 
-    public DefineException(String message) {
-        super(message);
-    }
-
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
+    @Override public RemoteClient select(List<RemoteClient> clients, Data message) {
+        int size = clients.size();
+        int selectIndex = Math.abs(message.getHashCode()) % size;
+        return clients.get(selectIndex);
     }
 }

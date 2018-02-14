@@ -17,21 +17,15 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
+package com.zl.skypointer.apm.collector.storage.table.application;
 
-
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+import org.apache.skywalking.apm.collector.core.data.CommonTable;
 
 /**
  * @author peng-yongsheng
  */
-public abstract class DefineException extends CollectorException {
-
-    public DefineException(String message) {
-        super(message);
-    }
-
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
-    }
+public class ApplicationComponentTable extends CommonTable {
+    public static final String TABLE = "application_component";
+    public static final String COLUMN_COMPONENT_ID = "component_id";
+    public static final String COLUMN_PEER_ID = "peer_id";
 }

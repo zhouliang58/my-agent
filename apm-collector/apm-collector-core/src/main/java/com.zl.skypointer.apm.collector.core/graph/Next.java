@@ -17,21 +17,36 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
+package com.zl.skypointer.apm.collector.core.graph;
 
+import org.apache.skywalking.apm.collector.core.framework.Executor;
 
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
- * @author peng-yongsheng
+ * The <code>Next</code> is a delegate object for the following {@link Node}.
+ *
+ * @author peng-yongsheng, wu-sheng
  */
-public abstract class DefineException extends CollectorException {
+public class Next<INPUT> implements Executor<INPUT> {
 
-    public DefineException(String message) {
-        super(message);
+    private final List<WayToNode> ways;
+
+    public Next() {
+        this.ways = new LinkedList<>();
     }
 
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
+    final void addWay(WayToNode way) {
+        ways.add(way);
+    }
+
+    /**
+     * Drive to the next nodes
+     *
+     * @param input
+     */
+    @Override public void execute(INPUT input) {
+        ways.forEach(way -> way.in(input));
     }
 }

@@ -17,21 +17,25 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
+package com.zl.skypointer.apm.collector.remote;
 
 
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+import com.zl.skypointer.apm.collector.core.module.Module;
+import com.zl.skypointer.apm.collector.remote.service.RemoteDataRegisterService;
+import com.zl.skypointer.apm.collector.remote.service.RemoteSenderService;
 
 /**
  * @author peng-yongsheng
  */
-public abstract class DefineException extends CollectorException {
+public class RemoteModule extends Module {
 
-    public DefineException(String message) {
-        super(message);
+    public static final String NAME = "remote";
+
+    @Override public String name() {
+        return NAME;
     }
 
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
+    @Override public Class[] services() {
+        return new Class[] {RemoteSenderService.class, RemoteDataRegisterService.class};
     }
 }

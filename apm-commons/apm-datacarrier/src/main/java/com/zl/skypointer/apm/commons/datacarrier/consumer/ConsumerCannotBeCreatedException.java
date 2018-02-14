@@ -17,21 +17,13 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
-
-
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+package com.zl.skypointer.apm.commons.datacarrier.consumer;
 
 /**
- * @author peng-yongsheng
+ * Created by wusheng on 2016/11/15.
  */
-public abstract class DefineException extends CollectorException {
-
-    public DefineException(String message) {
-        super(message);
-    }
-
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
+public class ConsumerCannotBeCreatedException extends RuntimeException {
+    ConsumerCannotBeCreatedException(Throwable t) {
+        super(t);
     }
 }

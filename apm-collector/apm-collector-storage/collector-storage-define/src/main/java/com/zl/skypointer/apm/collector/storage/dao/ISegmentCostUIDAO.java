@@ -17,21 +17,25 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
+package com.zl.skypointer.apm.collector.storage.dao;
 
+import com.google.gson.JsonObject;
+import org.apache.skywalking.apm.collector.storage.base.dao.DAO;
 
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+import java.util.List;
 
 /**
  * @author peng-yongsheng
  */
-public abstract class DefineException extends CollectorException {
+public interface ISegmentCostUIDAO extends DAO {
+    JsonObject loadTop(long startTime, long endTime, long minCost, long maxCost, String operationName,
+                       Error error, int applicationId, List<String> segmentIds, int limit, int from, Sort sort);
 
-    public DefineException(String message) {
-        super(message);
+    enum Sort {
+        Cost, Time
     }
 
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
+    enum Error {
+        All, True, False
     }
 }

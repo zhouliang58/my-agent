@@ -17,21 +17,18 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
+package com.zl.skypointer.apm.collector.remote.service;
 
 
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+import com.zl.skypointer.apm.collector.core.data.Data;
 
 /**
  * @author peng-yongsheng
  */
-public abstract class DefineException extends CollectorException {
+public interface RemoteClient extends Comparable<RemoteClient> {
+    String getAddress();
 
-    public DefineException(String message) {
-        super(message);
-    }
+    void push(int graphId, int nodeId, Data data);
 
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    boolean equals(String address);
 }

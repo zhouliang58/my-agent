@@ -17,21 +17,22 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
+package com.zl.skypointer.apm.collector.storage.base.dao;
 
 
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+import com.zl.skypointer.apm.collector.client.Client;
 
 /**
  * @author peng-yongsheng
  */
-public abstract class DefineException extends CollectorException {
+public abstract class AbstractDAO<C extends Client> implements DAO {
+    private final C client;
 
-    public DefineException(String message) {
-        super(message);
+    public AbstractDAO(C client) {
+        this.client = client;
     }
 
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
+    public final C getClient() {
+        return client;
     }
 }

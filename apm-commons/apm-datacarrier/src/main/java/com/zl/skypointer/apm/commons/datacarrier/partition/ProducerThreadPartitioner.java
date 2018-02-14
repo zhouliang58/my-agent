@@ -17,21 +17,30 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
-
-
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+package com.zl.skypointer.apm.commons.datacarrier.partition;
 
 /**
- * @author peng-yongsheng
+ * use threadid % total to partition
+ *
+ * Created by wusheng on 2016/10/25.
  */
-public abstract class DefineException extends CollectorException {
+public class ProducerThreadPartitioner<T> implements IDataPartitioner<T> {
+    private int retryTime = 3;
 
-    public DefineException(String message) {
-        super(message);
+    public ProducerThreadPartitioner() {
     }
 
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
+    public ProducerThreadPartitioner(int retryTime) {
+        this.retryTime = retryTime;
+    }
+
+    @Override
+    public int partition(int total, T data) {
+        return (int)Thread.currentThread().getId() % total;
+    }
+
+    @Override
+    public int maxRetryCount() {
+        return 1;
     }
 }

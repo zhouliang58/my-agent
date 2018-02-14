@@ -17,21 +17,16 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
+package com.zl.skypointer.apm.collector.remote.service;
 
 
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+import com.zl.skypointer.apm.collector.remote.RemoteException;
 
 /**
  * @author peng-yongsheng
  */
-public abstract class DefineException extends CollectorException {
-
-    public DefineException(String message) {
+public class RemoteDataMappingIdNotFoundException extends RemoteException {
+    public RemoteDataMappingIdNotFoundException(String message) {
         super(message);
-    }
-
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
     }
 }

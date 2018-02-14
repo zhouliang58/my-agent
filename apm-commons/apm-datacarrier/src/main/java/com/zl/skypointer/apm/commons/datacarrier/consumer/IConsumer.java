@@ -17,21 +17,19 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
+package com.zl.skypointer.apm.commons.datacarrier.consumer;
 
-
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+import java.util.List;
 
 /**
- * @author peng-yongsheng
+ * Created by wusheng on 2016/10/25.
  */
-public abstract class DefineException extends CollectorException {
+public interface IConsumer<T> {
+    void init();
 
-    public DefineException(String message) {
-        super(message);
-    }
+    void consume(List<T> data);
 
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    void onError(List<T> data, Throwable t);
+
+    void onExit();
 }

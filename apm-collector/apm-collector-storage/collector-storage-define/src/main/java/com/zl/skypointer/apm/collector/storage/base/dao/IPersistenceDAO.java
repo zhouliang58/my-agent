@@ -17,21 +17,20 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
+package com.zl.skypointer.apm.collector.storage.base.dao;
 
 
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+import com.zl.skypointer.apm.collector.core.data.Data;
 
 /**
  * @author peng-yongsheng
  */
-public abstract class DefineException extends CollectorException {
+public interface IPersistenceDAO<Insert, Update, DataImpl extends Data> extends DAO {
+    DataImpl get(String id);
 
-    public DefineException(String message) {
-        super(message);
-    }
+    Insert prepareBatchInsert(DataImpl data);
 
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    Update prepareBatchUpdate(DataImpl data);
+
+    void deleteHistory(Long startTimestamp, Long endTimestamp);
 }

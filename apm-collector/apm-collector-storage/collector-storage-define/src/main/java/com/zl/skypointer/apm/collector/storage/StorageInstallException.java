@@ -17,21 +17,18 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
-
-
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+package com.zl.skypointer.apm.collector.storage;
 
 /**
  * @author peng-yongsheng
  */
-public abstract class DefineException extends CollectorException {
+public class StorageInstallException extends StorageException {
 
-    public DefineException(String message) {
+    public StorageInstallException(String message) {
         super(message);
     }
 
-    public DefineException(String message, Throwable cause) {
+    public StorageInstallException(String message, Throwable cause) {
         super(message, cause);
     }
 }

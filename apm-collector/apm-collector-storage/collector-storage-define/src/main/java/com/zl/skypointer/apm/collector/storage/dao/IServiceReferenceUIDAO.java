@@ -17,21 +17,16 @@
  */
 
 
-package com.zl.skypointer.apm.collector.core.define;
+package com.zl.skypointer.apm.collector.storage.dao;
 
+import com.google.gson.JsonObject;
+import org.apache.skywalking.apm.collector.storage.base.dao.DAO;
 
-import com.zl.skypointer.apm.collector.core.module.CollectorException;
+import java.util.Map;
 
 /**
  * @author peng-yongsheng
  */
-public abstract class DefineException extends CollectorException {
-
-    public DefineException(String message) {
-        super(message);
-    }
-
-    public DefineException(String message, Throwable cause) {
-        super(message, cause);
-    }
+public interface IServiceReferenceUIDAO extends DAO {
+    Map<String, JsonObject> load(int entryServiceId, long startTime, long endTime);
 }
